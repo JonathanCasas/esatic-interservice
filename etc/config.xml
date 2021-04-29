@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <interservice>
+                <active>0</active>
+                <title>Interservice</title>
+                <name>Interservice</name>
+                <sallowspecific>0</sallowspecific>
+                <username/>
+                <password/>
+                <auto_creation>1</auto_creation>
+                <create_with_shipping>0</create_with_shipping>
+                <process>LAFCL,LAFMN,LAFTI</process>
+                <sort_order>15</sort_order>
+                <model>Esatic\Interservice\Model\Carrier\Interservice</model>
+            </interservice>
+        </carriers>
+    </default>
+</config>
