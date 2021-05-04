@@ -26,17 +26,24 @@ class QuoteShippingPriceDto
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
     private $scopeConfig;
+    /**
+     * @var \Esatic\Interservice\Helper\GetPackaging
+     */
+    private $getPackaging;
 
     public function __construct(
         \Esatic\Interservice\Model\GetCityCodeInterface $getCityCode,
         \Magento\Checkout\Model\Session $session,
         \Esatic\Interservice\Logger\Logger $logger,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-    ) {
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Esatic\Interservice\Helper\GetPackaging $getPackaging
+    )
+    {
         $this->getCityCode = $getCityCode;
         $this->session = $session;
         $this->logger = $logger;
         $this->scopeConfig = $scopeConfig;
+        $this->getPackaging = $getPackaging;
     }
 
     /**
@@ -44,6 +51,7 @@ class QuoteShippingPriceDto
      * @return ItemQuote[]|null
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Exception
      */
     public function execute(\Magento\Quote\Model\Quote\Address\RateRequest $request): ?array
     {
@@ -62,7 +70,7 @@ class QuoteShippingPriceDto
             $itemQuote = new ItemQuote();
             $itemQuote->setDestination($destCityCode);
             $itemQuote->setOrigin($originCodeCity);
-            $itemQuote->setPacking('SOBRE');
+            $itemQuote->setPacking($this->getPackaging->execute($request->getStoreId()));
             $itemQuote->setQty((int)$quote->getItemsQty());
             $itemQuote->setValue($quote->getSubtotal());
             $itemQuote->setWeight(is_null($weight) ? 1 : $weight);

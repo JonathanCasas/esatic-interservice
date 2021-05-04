@@ -4,6 +4,7 @@ namespace Esatic\Interservice\Model\Ws\Dto;
 
 use Esatic\Interservice\Model\GetCityCodeInterface;
 use Esatic\Interservice\Model\Ws\Entities\TrackingInformationRequest;
+use Magento\Sales\Model\Order;
 use Magento\Store\Model\ScopeInterface;
 
 class CreateTrackingInformationDto
@@ -21,18 +22,47 @@ class CreateTrackingInformationDto
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
     private $scopeConfig;
+    /**
+     * @var \Esatic\Interservice\Helper\GetPackaging
+     */
+    private $getPackaging;
+    /**
+     * @var \Esatic\Interservice\Helper\Data
+     */
+    private $data;
+    /**
+     * @var int
+     */
+    private $length = 0;
+    /**
+     * @var int
+     */
+    private $height = 0;
+    /**
+     * @var int
+     */
+    private $with = 0;
 
     /**
      * CreateTrackingInformationDto constructor.
      * @param GetCityCodeInterface $getCityCode
      * @param \Esatic\Interservice\Logger\Logger $logger
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Esatic\Interservice\Helper\Data $data
+     * @param \Esatic\Interservice\Helper\GetPackaging $getPackaging
      */
-    public function __construct(GetCityCodeInterface $getCityCode, \Esatic\Interservice\Logger\Logger $logger, \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig)
-    {
+    public function __construct(
+        GetCityCodeInterface $getCityCode,
+        \Esatic\Interservice\Logger\Logger $logger,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Esatic\Interservice\Helper\Data $data,
+        \Esatic\Interservice\Helper\GetPackaging $getPackaging
+    ) {
         $this->getCityCode = $getCityCode;
         $this->logger = $logger;
         $this->scopeConfig = $scopeConfig;
+        $this->data = $data;
+        $this->getPackaging = $getPackaging;
     }
 
     /**
@@ -68,16 +98,26 @@ class CreateTrackingInformationDto
         $trackingInformationRequest->setDestinationRegion($shippingAddress->getRegion());
         $trackingInformationRequest->setDestinationCity($destinationCodeCity);
         $trackingInformationRequest->setDestinationPostalCode($shippingAddress->getPostcode());
-        $trackingInformationRequest->setPacking('SOBRE');//Pending configuration
-        $trackingInformationRequest->setSayContain('Pruebas');//Pending Configuration
+        $trackingInformationRequest->setPacking($this->getPackaging->execute($order->getStoreId()));//Pending configuration
+        $trackingInformationRequest->setSayContain($this->getSayContain($order));//Pending Configuration
         $trackingInformationRequest->setQty((int)$order->getTotalQtyOrdered());
         $trackingInformationRequest->setWeight(is_null($order->getWeight()) || $order->getWeight() < 1 ? 1 : $order->getWeight());
         $trackingInformationRequest->setValue($order->getGrandTotal());
-        $trackingInformationRequest->setLong(0);
-        $trackingInformationRequest->setHeight(0);
-        $trackingInformationRequest->setWith(0);
+        $trackingInformationRequest->setLong($this->length);
+        $trackingInformationRequest->setHeight($this->height);
+        $trackingInformationRequest->setWith($this->with);
         $trackingInformationRequest->setDescription($order->getShippingDescription());
         $trackingInformationRequest->setIsLetterCopy(0);
         return [$trackingInformationRequest];
+    }
+
+    private function getSayContain(Order $order): string
+    {
+        $sayContain = '';
+        /** @var \Magento\Sales\Model\Order\Item $item */
+        foreach ($order->getAllVisibleItems() as $item) {
+            $sayContain .= sprintf('%s ', $item->getName());
+        }
+        return $sayContain;
     }
 }

@@ -144,6 +144,12 @@ class CreateTrackingInformationFacade
         $trackFactory->setNumber($guide->getShippingCode());
         $trackFactory->setTrackNumber($guide->getShippingCode());
         $shipment->addTrack($trackFactory);
+        if (count($trackingInformation->getUrlList()) > 0) {
+            $pdf = $trackingInformation->getUrlList()[0];
+            $extensionAttributes = $trackFactory->getExtensionAttributes();
+            $extensionAttributes->setPdfTracking($pdf);
+            $trackFactory->setExtensionAttributes($extensionAttributes);
+        }
         // Register shipment
         $shipment->register();
         $this->_shipmentRepository->save($shipment);

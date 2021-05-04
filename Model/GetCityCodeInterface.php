@@ -13,6 +13,7 @@ interface GetCityCodeInterface
      * @param string $regionId
      * @param string $city the city name for search
      * @return string|null
+     * @throws \Exception if the city has not been found
      */
     public function execute(string $regionId, string $city): ?string;
 

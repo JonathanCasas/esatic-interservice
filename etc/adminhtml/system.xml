@@ -38,29 +38,34 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <frontend_class>shipping-skip-hide</frontend_class>
                 </field>
-                <field id="username" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
+                <field id="username" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
                        showInStore="0">
                     <label>Username</label>
                 </field>
-                <field id="password" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
+                <field id="password" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1"
                        showInStore="0">
                     <label>Password</label>
                 </field>
-                <field id="process" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
+                <field id="process" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1"
                        showInStore="0">
                     <label>Process</label>
                 </field>
-                <field id="auto_creation" translate="label" type="select" sortOrder="80" showInDefault="1"
+                <field id="auto_creation" translate="label" type="select" sortOrder="120" showInDefault="1"
                        showInWebsite="1" showInStore="0">
                     <label>Create tracking document when payment is approved</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="create_with_shipping" translate="label" type="select" sortOrder="80" showInDefault="1"
+                <field id="create_with_shipping" translate="label" type="select" sortOrder="130" showInDefault="1"
                        showInWebsite="1" showInStore="0">
                     <label>create when magento shipment was created</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="sort_order" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+                <field id="packaging" translate="label" type="select" sortOrder="140" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Default packaging</label>
+                    <source_model>Esatic\Interservice\Model\Config\Source\Packaging</source_model>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="150" showInDefault="1" showInWebsite="1"
                        showInStore="0">
                     <label>Sort Order</label>
                 </field>

@@ -54,6 +54,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->scopeConfig->getValue($this->getPath('process'), ScopeInterface::SCOPE_STORE, $storeId);
     }
 
+    public function packaging($storeId = null)
+    {
+        return $this->scopeConfig->getValue($this->getPath('packaging'), ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
     private function getPath(string $path): string
     {
         return sprintf('%s%s', self::BASE_PATH, $path);

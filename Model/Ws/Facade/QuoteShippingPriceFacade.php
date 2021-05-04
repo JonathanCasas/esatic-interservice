@@ -32,6 +32,12 @@ class QuoteShippingPriceFacade
         $this->data = $data;
     }
 
+    /**
+     * @param RateRequest $request
+     * @return QuoteResponse|null
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function query(RateRequest $request): ?QuoteResponse
     {
         $quote = json_encode($this->quoteShippingPriceDto->execute($request));
