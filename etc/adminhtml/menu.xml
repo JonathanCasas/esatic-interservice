@@ -5,7 +5,7 @@
         <add id="Esatic_Interservice::base" title="Interservice / Interservicios" module="Esatic_Interservice"
              sortOrder="60"
              resource="Esatic_Interservice::base"/>
-        <add id="Esatic_Interservice::packing" title="Packaging" module="Esatic_Interservice" sortOrder="10"
+        <add id="Esatic_Interservice::packing" title="Paquetes" module="Esatic_Interservice" sortOrder="10"
              action="esatic/interservice" resource="Esatic_Interservice::packing"
              parent="Esatic_Interservice::base"/>
     </menu>

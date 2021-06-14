@@ -101,17 +101,19 @@ class Interservice extends \Magento\Shipping\Model\Carrier\AbstractCarrier imple
         $result = $this->rateResultFactory->create();
         if ($this->quoteResponse->getQuantity() > 0) {
             foreach ($this->quoteResponse->getQuoteDetail() as $item) {
-                /** @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method */
-                $method = $this->rateMethodFactory->create();
-                $code = sprintf('%s_%s', $this->_code, $item->getCodProcess());
-                $method->setCarrier($this->_code);
-                $method->setCarrierTitle($this->getConfigData('title'));
-                $method->setMethod($item->getCodProcess());
-                $method->setMethodTitle($this->getConfigData('name'));
                 $shippingCost = $item->getShippingValue();
-                $method->setPrice($shippingCost);
-                $method->setCost($shippingCost);
-                $result->append($method);
+                if (!is_null($item->getProcessName()) && !empty($item->getProcessName())) {
+                    /** @var \Magento\Quote\Model\Quote\Address\RateResult\Method $method */
+                    $method = $this->rateMethodFactory->create();
+                    $code = sprintf('%s_%s', $this->_code, $item->getCodProcess());
+                    $method->setCarrier($this->_code);
+                    $method->setCarrierTitle($item->getProcessName());
+                    $method->setMethod($item->getCodProcess());
+                    $method->setMethodTitle($this->getConfigData('title'));
+                    $method->setPrice($shippingCost);
+                    $method->setCost($shippingCost);
+                    $result->append($method);
+                }
             }
         }
         return $result;
@@ -133,22 +135,6 @@ class Interservice extends \Magento\Shipping\Model\Carrier\AbstractCarrier imple
     public function isCityRequired()
     {
         return true;
-    }
-
-    /**
-     * Return Tracking Number
-     *
-     * @param array|object $trackingIds
-     * @return string
-     */
-    private function getTrackingNumber($trackingIds): string
-    {
-        return is_array($trackingIds) ? array_map(
-            function ($val) {
-                return $val->TrackingNumber;
-            },
-            $trackingIds
-        ) : $trackingIds->TrackingNumber;
     }
 
     /**

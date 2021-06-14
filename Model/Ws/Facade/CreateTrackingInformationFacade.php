@@ -39,10 +39,23 @@ class CreateTrackingInformationFacade
      * @var \Magento\Sales\Api\OrderRepositoryInterface
      */
     private $_orderRepository;
+
+    /**
+     * @var \Esatic\Interservice\Model\DocumentPdfFactory
+     */
+    private $documentPdfFactory;
+    /**
+     * @var \Esatic\Interservice\Model\ResourceModel\DocumentPdfFactory
+     */
+    private $resourceModelFactory;
     /**
      * @var \Esatic\Interservice\Logger\Logger
      */
     private $logger;
+    /**
+     * @var Order\Shipment
+     */
+    private $shipment;
 
     /**
      * CreateTrackingInformationFacade constructor.
@@ -53,6 +66,8 @@ class CreateTrackingInformationFacade
      * @param Order\Shipment\TrackFactory $trackFactory
      * @param \Magento\Sales\Api\OrderRepositoryInterface $_orderRepository
      * @param \Esatic\Interservice\Logger\Logger $logger
+     * @param \Esatic\Interservice\Model\DocumentPdfFactory $documentPdfFactory
+     * @param \Esatic\Interservice\Model\ResourceModel\DocumentPdfFactory $resourceModelFactory
      */
     public function __construct(
         \Esatic\Interservice\Model\Ws\Dto\CreateTrackingInformationDto $createTrackingInformationDto,
@@ -61,6 +76,8 @@ class CreateTrackingInformationFacade
         \Magento\Shipping\Model\ShipmentNotifier $shipmentNotifier,
         \Magento\Sales\Model\Order\Shipment\TrackFactory $trackFactory,
         \Magento\Sales\Api\OrderRepositoryInterface $_orderRepository,
+        \Esatic\Interservice\Model\DocumentPdfFactory $documentPdfFactory,
+        \Esatic\Interservice\Model\ResourceModel\DocumentPdfFactory $resourceModelFactory,
         \Esatic\Interservice\Logger\Logger $logger
     )
     {
@@ -71,6 +88,8 @@ class CreateTrackingInformationFacade
         $this->_trackFactory = $trackFactory;
         $this->_orderRepository = $_orderRepository;
         $this->logger = $logger;
+        $this->documentPdfFactory = $documentPdfFactory;
+        $this->resourceModelFactory = $resourceModelFactory;
     }
 
     /**
@@ -93,8 +112,9 @@ class CreateTrackingInformationFacade
      */
     private function createTrackingInformation(Order $order, $method): TrackingInformationResponse
     {
+        $url = $this->helper->getUrl($order->getStoreId());
         $data = $this->createTrackingInformationDto->execute($order);
-        $srvClient = new SrvClientes();
+        $srvClient = new SrvClientes(array(), $url);
         $loadGuides = new CargarGuiasRecoleccion(
             $method,
             json_encode($data),
@@ -123,7 +143,7 @@ class CreateTrackingInformationFacade
             return;
         }
         $convertOrder = $objectManager->create(\Magento\Sales\Model\Convert\Order::class);
-        $shipment = $convertOrder->toShipment($order);
+        $this->shipment = $convertOrder->toShipment($order);
         // Loop through order items
         foreach ($order->getAllItems() as $orderItem) {
             // Check if order item has qty to ship or is virtual
@@ -134,7 +154,7 @@ class CreateTrackingInformationFacade
             // Create shipment item with qty
             $shipmentItem = $convertOrder->itemToShipmentItem($orderItem)->setQty($qtyShipped);
             // Add shipment item to shipment
-            $shipment->addItem($shipmentItem);
+            $this->shipment->addItem($shipmentItem);
         }
         $guide = $trackingInformation->getGuides()[0];
         $trackFactory = $this->_trackFactory->create();
@@ -143,7 +163,7 @@ class CreateTrackingInformationFacade
         $trackFactory->setTitle($this->helper->name($order->getStoreId()));
         $trackFactory->setNumber($guide->getShippingCode());
         $trackFactory->setTrackNumber($guide->getShippingCode());
-        $shipment->addTrack($trackFactory);
+        $this->shipment->addTrack($trackFactory);
         if (count($trackingInformation->getUrlList()) > 0) {
             $pdf = $trackingInformation->getUrlList()[0];
             $extensionAttributes = $trackFactory->getExtensionAttributes();
@@ -151,15 +171,44 @@ class CreateTrackingInformationFacade
             $trackFactory->setExtensionAttributes($extensionAttributes);
         }
         // Register shipment
-        $shipment->register();
-        $this->_shipmentRepository->save($shipment);
+        $this->shipment->register();
+        $this->_shipmentRepository->save($this->shipment);
         $this->_orderRepository->save($order);
         // Send email
         try {
-            $this->_shipmentNotifier->notify($shipment);
+            $this->_shipmentNotifier->notify($this->shipment);
         } catch (\Exception $ex) {
             $this->logger->info('Error send notification shipping');
         }
-        $this->_shipmentRepository->save($shipment);
+        $this->_shipmentRepository->save($this->shipment);
+        $this->saveUrlPdf($order->getEntityId(), $this->shipment->getEntityId(), $trackingInformation->getUrlList());
     }
+
+
+    /**
+     * @throws \Magento\Framework\Exception\AlreadyExistsException
+     */
+    public function saveUrlPdf(int $orderId, int $trackingId = null, array $urls = [])
+    {
+        $this->logger->info('Savid documents');
+        $this->logger->info(json_encode($urls));
+        $resourceModel = $this->resourceModelFactory->create();
+        foreach ($urls as $url) {
+            $model = $this->documentPdfFactory->create();
+            $model->setOrderId($orderId);
+            $model->setShipmentId($trackingId);
+            $model->setUrlDocument($url);
+            $resourceModel->save($model);
+        }
+    }
+
+    /**
+     * @return Order\Shipment
+     */
+    public function getShipment(): Order\Shipment
+    {
+        return $this->shipment;
+    }
+
+
 }

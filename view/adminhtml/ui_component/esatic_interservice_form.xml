@@ -6,7 +6,7 @@
             <item name="provider" xsi:type="string">esatic_interservice_form.esatic_interservice_form_data_source</item>
             <item name="deps" xsi:type="string">esatic_interservice_form.esatic_interservice_form_data_source</item>
         </item>
-        <item name="label" xsi:type="string" translate="true">Packaging</item>
+        <item name="label" xsi:type="string" translate="true">Paquete</item>
         <item name="config" xsi:type="array">
             <item name="dataScope" xsi:type="string">data</item>
             <item name="namespace" xsi:type="string">esatic_interservice_form</item>
@@ -46,7 +46,7 @@
         </settings>
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
-                <item name="label" xsi:type="string" translate="true">Packaging</item>
+                <item name="label" xsi:type="string" translate="true">Paquete</item>
             </item>
         </argument>
 
@@ -65,7 +65,7 @@
         <field name="name">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string">Name</item>
+                    <item name="label" xsi:type="string">Nombre</item>
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="formElement" xsi:type="string">input</item>
@@ -80,7 +80,7 @@
         <field name="description">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="label" xsi:type="string">Description</item>
+                    <item name="label" xsi:type="string">Descripción</item>
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="dataType" xsi:type="string">textarea</item>
                     <item name="formElement" xsi:type="string">textarea</item>

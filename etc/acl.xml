@@ -5,7 +5,7 @@
         <resources>
             <resource id="Magento_Backend::admin">
                 <resource id="Esatic_Interservice::base" title="Interservice / Interservicios" sortOrder="51">
-                    <resource id="Esatic_Interservice::packing" title="Packaging" sortOrder="10"/>
+                    <resource id="Esatic_Interservice::packing" title="Paquetes" sortOrder="10"/>
                 </resource>
             </resource>
         </resources>

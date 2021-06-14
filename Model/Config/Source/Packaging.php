@@ -21,7 +21,7 @@ class Packaging implements \Magento\Framework\Data\OptionSourceInterface
 
     public function toOptionArray(): array
     {
-        $data = [['value' => '', 'label' => __('Select default packaging')]];
+        $data = [['value' => '', 'label' => __('Seleccionar tipo de paquete por defecto')]];
         /** @var \Esatic\Interservice\Model\Packaging[] $collection */
         $collection = $this->collectionFactory->create()->getItems();
         foreach ($collection as $item) {

@@ -21,7 +21,7 @@ class Create extends \Magento\Backend\App\Action
     public function execute()
     {
         $resultPage = $this->_pageFactory->create();
-        $resultPage->getConfig()->getTitle()->prepend((__('New Packaging')));
+        $resultPage->getConfig()->getTitle()->prepend((__('Nuevo paquete')));
         return $resultPage;
     }
 }

@@ -8,9 +8,9 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="order_tab_info">
-            <block class="Magento\Sales\Block\Adminhtml\Order\AbstractOrder" name="order_shipping_view_pdf"
-                   template="Magento_Shipping::order/view/info.phtml"/>
+        <referenceBlock name="order_additional_info">
+            <block class="Esatic\Interservice\Block\Adminhtml\Order\View" name="order_shipping_view_pdf"
+                   template="Esatic_Interservice::view/info.phtml"/>
         </referenceBlock>
     </body>
 </page>

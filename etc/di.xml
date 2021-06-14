@@ -33,4 +33,6 @@
     </type>
     <preference for="Esatic\Interservice\Model\GetCityCodeInterface"
                 type="Esatic\Interservice\Model\GetCityCode"/>
+    <preference for="Esatic\Interservice\Api\TrackingInterface"
+                type="Esatic\Interservice\Model\Tracking"/>
 </config>

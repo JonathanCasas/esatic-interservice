@@ -16,6 +16,7 @@ class QuoteDetailItemResponse implements \JsonSerializable
     private $inconsistencies;
     private $valid;
     private $message;
+    private $processName;
 
     /**
      * @return mixed
@@ -272,8 +273,28 @@ class QuoteDetailItemResponse implements \JsonSerializable
         if (isset($data->Mensaje)) {
             $quoteDetail->setMessage($data->Mensaje);
         }
+        if (isset($data->Proceso)) {
+            $quoteDetail->setProcessName($data->Proceso);
+        }
         return $quoteDetail;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getProcessName()
+    {
+        return $this->processName;
+    }
+
+    /**
+     * @param mixed $processName
+     */
+    public function setProcessName($processName): void
+    {
+        $this->processName = $processName;
+    }
+
 
     public function jsonSerialize(): array
     {
@@ -290,6 +311,7 @@ class QuoteDetailItemResponse implements \JsonSerializable
             'inconsistencies' => $this->inconsistencies,
             'valid' => $this->valid,
             'message' => $this->message,
+            'processName' => $this->processName
         ];
     }
 }

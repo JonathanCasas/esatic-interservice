@@ -40,7 +40,7 @@ class Save extends \Magento\Backend\App\Action
         $packaging->setDescription($this->getRequest()->getParam('description'));
         $packaging->setName($this->getRequest()->getParam('name'));
         $resourceModel->save($packaging);
-        $this->messageManager->addSuccessMessage(__('The Packaging has been saved'));
+        $this->messageManager->addSuccessMessage(__('El paquete ha sido guardado'));
         $resultRedirect = $this->resultFactory->create(\Magento\Framework\Controller\ResultFactory::TYPE_REDIRECT);
         $resultRedirect->setPath('*/*/edit', ['id' => $packaging->getEntityId(), 'back' => null, '_current' => true]);
         return $resultRedirect;

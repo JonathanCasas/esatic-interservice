@@ -1,0 +1,9 @@
+<?php /** @var \Esatic\Interservice\Block\Adminhtml\Order\View $block */ ?>
+<?php
+/** @var \Esatic\Interservice\Model\DocumentPdf[] $orders */
+$orders = $block->getDocumentPdf();
+?>
+<?php foreach ($orders as $order): ?>
+    <a href="<?= $order->getUrlDocument() ?>" target="_blank"><?= __('Link Guía de remisión') ?></a>
+<?php endforeach; ?>
+<br>

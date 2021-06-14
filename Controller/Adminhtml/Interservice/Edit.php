@@ -21,7 +21,7 @@ class Edit extends \Magento\Backend\App\Action
     public function execute()
     {
         $resultPage = $this->_pageFactory->create();
-        $resultPage->getConfig()->getTitle()->prepend((__('Edit Packaging')));
+        $resultPage->getConfig()->getTitle()->prepend((__('Editar Paquete')));
         $this->getRequest();
         return $resultPage;
     }

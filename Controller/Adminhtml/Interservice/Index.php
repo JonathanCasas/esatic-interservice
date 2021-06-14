@@ -22,7 +22,7 @@ class Index extends \Magento\Backend\App\Action
     public function execute()
     {
         $resultPage = $this->_pageFactory->create();
-        $resultPage->getConfig()->getTitle()->prepend((__('Packaging')));
+        $resultPage->getConfig()->getTitle()->prepend((__('Paquetes')));
         return $resultPage;
     }
 }

@@ -63,4 +63,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         return sprintf('%s%s', self::BASE_PATH, $path);
     }
+
+    public function getUrl($storeId = null): string
+    {
+        return $this->scopeConfig->getValue($this->getPath('url'), ScopeInterface::SCOPE_STORE, $storeId);
+    }
 }

@@ -11,6 +11,7 @@ class ItemQuote implements \JsonSerializable
     private $value;
     private $qty;
 
+
     /**
      * @return mixed
      */
