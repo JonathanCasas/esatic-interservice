@@ -30,7 +30,8 @@ class GetTrackingInformationFacade
 
     public function execute($shippingId, Order $order)
     {
-        $srvClient = new SrvClientes();
+        $url = $this->data->getUrl($order->getStoreId());
+        $srvClient = new SrvClientes(array(), $url);
         $trackingShipping2 = new RastreoEnvios2(
             $shippingId,
             $this->data->username($order->getStoreId()),

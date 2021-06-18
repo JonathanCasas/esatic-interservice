@@ -17,10 +17,14 @@ composer require esatic/interservice
 # Enable Module
 
 ```shell
+bin/magento module:enable Eadesigndev_Eacore
+bin/magento module:enable Eadesigndev_RomCity
+bin/magento module:enable Esatic_DropdownCity
 bin/magento module:enable Esatic_Interservice
-bin/magento module:enable setup:di:compile
-bin/magento module:enable cache:clean
-bin/magento module:enable cache:flush
+bin/magento setup:upgrade
+bin/magento setup:di:compile
+bin/magento cache:clean
+bin/magento cache:flush
 ```
 
 # Configuration:
@@ -71,5 +75,5 @@ class GetCityCode implements \Esatic\Interservice\Model\GetCityCodeInterface{
 - Finally
 
 ```shell
-bin/magento module:enable setup:di:compile
+bin/magento setup:di:compile
 ```

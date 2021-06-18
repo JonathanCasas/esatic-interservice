@@ -27,7 +27,8 @@ class QuoteShippingPriceFacade
     public function __construct(
         \Esatic\Interservice\Model\Ws\Dto\QuoteShippingPriceDto $quoteShippingPriceDto,
         \Esatic\Interservice\Helper\Data $data
-    ) {
+    )
+    {
         $this->quoteShippingPriceDto = $quoteShippingPriceDto;
         $this->data = $data;
     }
@@ -44,7 +45,8 @@ class QuoteShippingPriceFacade
         if (is_null($quote)) {
             return null;
         }
-        $srvClient = new SrvClientes();
+        $url = $this->data->getUrl($request->getStoreId());
+        $srvClient = new SrvClientes(array(), $url);
         $quoteService = new CotizarServicio(
             $this->data->process($request->getStoreId()),
             $quote,
