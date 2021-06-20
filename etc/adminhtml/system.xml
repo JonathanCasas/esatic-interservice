@@ -64,7 +64,11 @@
                     <label>Tipo de paquete por defecto</label>
                     <source_model>Esatic\Interservice\Model\Config\Source\Packaging</source_model>
                 </field>
-                <field id="sort_order" translate="label" type="text" sortOrder="150" showInDefault="1" showInWebsite="1"
+                <field id="weight" translate="label" type="text" sortOrder="150" showInDefault="1" showInWebsite="1"
+                       showInStore="0">
+                    <label>Peso por defecto en kg</label>
+                </field>
+                <field id="sort_order" translate="label" type="text" sortOrder="160" showInDefault="1" showInWebsite="1"
                        showInStore="0">
                     <label>Sort Order</label>
                 </field>

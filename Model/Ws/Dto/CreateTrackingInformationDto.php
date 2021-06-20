@@ -57,7 +57,8 @@ class CreateTrackingInformationDto
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Esatic\Interservice\Helper\Data $data,
         \Esatic\Interservice\Helper\GetPackaging $getPackaging
-    ) {
+    )
+    {
         $this->getCityCode = $getCityCode;
         $this->logger = $logger;
         $this->scopeConfig = $scopeConfig;
@@ -68,6 +69,7 @@ class CreateTrackingInformationDto
     /**
      * @param \Magento\Sales\Model\Order $order
      * @return TrackingInformationRequest[]|null
+     * @throws \Exception
      */
     public function execute(\Magento\Sales\Model\Order $order): ?array
     {
@@ -119,5 +121,15 @@ class CreateTrackingInformationDto
             $sayContain .= sprintf('%s ', $item->getName());
         }
         return $sayContain;
+    }
+
+    /**
+     * @param null $storeId
+     * @return string
+     */
+    public function getWeight($storeId = null): string
+    {
+        $weight = $this->data->getWeight($storeId);
+        return !is_null($weight) && !empty($weight) ? $weight : 1;
     }
 }

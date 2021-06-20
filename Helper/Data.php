@@ -49,23 +49,48 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->scopeConfig->getValue($this->getPath('create_with_shipping'), ScopeInterface::SCOPE_STORE, $storeId);
     }
 
+    /**
+     * @param null $storeId
+     * @return mixed
+     */
     public function process($storeId = null)
     {
         return $this->scopeConfig->getValue($this->getPath('process'), ScopeInterface::SCOPE_STORE, $storeId);
     }
 
+    /**
+     * @param null $storeId
+     * @return mixed
+     */
     public function packaging($storeId = null)
     {
         return $this->scopeConfig->getValue($this->getPath('packaging'), ScopeInterface::SCOPE_STORE, $storeId);
     }
 
+    /**
+     * @param string $path
+     * @return string
+     */
     private function getPath(string $path): string
     {
         return sprintf('%s%s', self::BASE_PATH, $path);
     }
 
+    /**
+     * @param null $storeId
+     * @return string
+     */
     public function getUrl($storeId = null): string
     {
         return $this->scopeConfig->getValue($this->getPath('url'), ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param null $storeId
+     * @return string
+     */
+    public function getWeight($storeId = null): string
+    {
+        return $this->scopeConfig->getValue($this->getPath('weight'), ScopeInterface::SCOPE_STORE, $storeId);
     }
 }

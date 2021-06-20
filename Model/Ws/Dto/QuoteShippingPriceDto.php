@@ -30,13 +30,18 @@ class QuoteShippingPriceDto
      * @var \Esatic\Interservice\Helper\GetPackaging
      */
     private $getPackaging;
+    /**
+     * @var \Esatic\Interservice\Helper\Data
+     */
+    private $data;
 
     public function __construct(
         \Esatic\Interservice\Model\GetCityCodeInterface $getCityCode,
         \Magento\Checkout\Model\Session $session,
         \Esatic\Interservice\Logger\Logger $logger,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Esatic\Interservice\Helper\GetPackaging $getPackaging
+        \Esatic\Interservice\Helper\GetPackaging $getPackaging,
+        \Esatic\Interservice\Helper\Data $data
     )
     {
         $this->getCityCode = $getCityCode;
@@ -44,6 +49,7 @@ class QuoteShippingPriceDto
         $this->logger = $logger;
         $this->scopeConfig = $scopeConfig;
         $this->getPackaging = $getPackaging;
+        $this->data = $data;
     }
 
     /**
@@ -73,10 +79,20 @@ class QuoteShippingPriceDto
             $itemQuote->setPacking($this->getPackaging->execute($request->getStoreId()));
             $itemQuote->setQty((int)$quote->getItemsQty());
             $itemQuote->setValue($quote->getSubtotal());
-            $itemQuote->setWeight(is_null($weight) ? 1 : $weight);
+            $itemQuote->setWeight(is_null($weight) ? $this->getDefaultWeight($request) : $weight);
             $this->logger->info(json_encode([$itemQuote]));
             return [$itemQuote];
         }
         return null;
+    }
+
+    /**
+     * @param \Magento\Quote\Model\Quote\Address\RateRequest $request
+     * @return string
+     */
+    private function getDefaultWeight(\Magento\Quote\Model\Quote\Address\RateRequest $request): string
+    {
+        $weight = $this->data->getWeight($request->getStoreId());
+        return !is_null($weight) && !empty($weight) ? $weight : 1;
     }
 }

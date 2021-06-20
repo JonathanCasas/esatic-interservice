@@ -15,6 +15,7 @@
                 <process>LAFCL,LAFMN,LAFTI</process>
                 <sort_order>15</sort_order>
                 <model>Esatic\Interservice\Model\Carrier\Interservice</model>
+                <weight>1</weight>
             </interservice>
         </carriers>
     </default>
